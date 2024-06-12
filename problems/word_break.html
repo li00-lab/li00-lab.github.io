@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Break - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .shell {
+        color: #333;
+      }
+      .shell .command {
+        color: #008000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Word Break</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        Given a string s and a dictionary of strings wordDict, return true if s
+        can be segmented into a space-separated sequence of one or more
+        dictionary words.
+      </p>
+      <p>
+        Note that the same word in the dictionary may be reused multiple times
+        in the segmentation.
+      </p>
+      <pre class="shell">
+        <code>
+          Example 1: Input: s = "leetcode", wordDict = ["leet","code"]
+          Output: true
+          Explanation: Return true because "leetcode" can be segmented as
+          "leet code".
+          
+          Example 2: Input: s = "applepenapple", wordDict = ["apple","pen"]
+          Output: true
+          Explanation: Return true because "applepenapple" can be segmented as
+          "apple pen apple". Note that you are allowed to reuse a dictionary word.
+          
+          Example 3: Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+          Output: false
+        </code>
+      </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+        <code>
+          <span class="keyword">class</span> <span class="identifier">Solution</span>:
+              <span class="keyword">def</span> <span class="identifier">wordBreak</span>(<span class="identifier">self</span>, <span class="identifier">s</span>: <span class="string">str</span>, <span class="identifier">wordDict</span>: <span class="identifier">List</span>[<span class="string">str</span>]) -> <span class="string">bool</span>:
+              
+                  <span class="identifier">dp</span> = [<span class="literal">False</span>] * (<span class="identifier">len</span>(<span class="identifier">s</span>) + <span class="literal">1</span>)
+                  <span class="identifier">dp</span>[<span class="literal">0</span>] = <span class="literal">True</span>
+              
+                  <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">len</span>(<span class="identifier">s</span>) + <span class="literal">1</span>):
+                      <span class="keyword">for</span> <span class="identifier">j</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">i</span>):
+                          <span class="keyword">if</span> <span class="identifier">dp</span>[<span class="identifier">j</span>] <span class="keyword">and</span> <span class="identifier">s</span>[<span class="identifier">j</span>:<span class="identifier">i</span>] <span class="keyword">in</span> <span class="identifier">wordDict</span>:
+                              <span class="identifier">dp</span>[<span class="identifier">i</span>] = <span class="literal">True</span>
+                          
+                  <span class="keyword">return</span> <span class="identifier">dp</span>[<span class="identifier">len</span>(<span class="identifier">s</span>)]
+        </code>
+      </pre>
+    </div>
+  </body>
+</html>
