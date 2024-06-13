@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Ladder - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Word Ladder</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        A transformation sequence from word <code>beginWord</code> to word <code>endWord</code> using a dictionary <code>wordList</code> is a sequence of words <code>beginWord -> s1 -> s2 -> ... -> sk</code> such that:
+      </p>
+      <ul>
+        <li>Every adjacent pair of words differs by a single letter.</li>
+        <li>Every <code>si</code> for 1 <= i <= k is in <code>wordList</code>. Note that <code>beginWord</code> does not need to be in <code>wordList</code>.</li>
+        <li><code>sk == endWord</code></li>
+      </ul>
+      <p>
+        Given two words, <code>beginWord</code> and <code>endWord</code>, and a dictionary <code>wordList</code>, return the number of words in the shortest transformation sequence from <code>beginWord</code> to <code>endWord</code>, or 0 if no such sequence exists.
+      </p>
+      <pre class="shell">
+        <code>
+          Example 1: Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+          Output: 5
+          Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which is 5 words long.
+          
+          Example 2: Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+          Output: 0
+          Explanation: The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+        </code>
+      </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+        <code>
+          <span class="keyword">from</span> <span class="identifier">collections</span> <span class="keyword">import</span> <span class="identifier">deque</span>
+          <span class="keyword">class</span> <span class="identifier">Solution</span>:
+              <span class="keyword">def</span> <span class="identifier">is_adjacent</span>(<span class="identifier">self</span>, <span class="identifier">word1</span>, <span class="identifier">word2</span>):
+                  <span class="identifier">count</span> = <span class="literal">0</span>
+                  <span class="keyword">for</span> <span class="identifier">i</span>, <span class="identifier">j</span> <span class="keyword">in</span> <span class="identifier">zip</span>(<span class="identifier">word1</span>, <span class="identifier">word2</span>):
+                      <span class="keyword">if</span> <span class="identifier">i</span> != <span class="identifier">j</span>:
+                          <span class="identifier">count</span> += <span class="literal">1</span>
+                  <span class="keyword">if</span> <span class="identifier">count</span> > <span class="literal">1</span>:
+                      <span class="keyword">return</span> <span class="literal">False</span>
+                  <span class="keyword">return</span> <span class="literal">True</span>
+              
+              <span class="keyword">def</span> <span class="identifier">ladderLength</span>(<span class="identifier">self</span>, <span class="identifier">beginWord</span>: <span class="string">str</span>, <span class="identifier">endWord</span>: <span class="string">str</span>, <span class="identifier">wordList</span>: <span class="identifier">List</span>[<span class="string">str</span>]) -> <span class="string">int</span>:
+                  <span class="identifier">queue</span> = <span class="identifier">deque</span>([(<span class="identifier">beginWord</span>, [<span class="identifier">beginWord</span>])])
+                  <span class="identifier">visited</span> = <span class="identifier">set</span>()
+                  <span class="identifier">visited</span>.add(<span class="identifier">beginWord</span>)
+                  
+                  <span class="keyword">while</span> <span class="identifier">queue</span>:
+                      <span class="identifier">current</span>, <span class="identifier">path</span> = <span class="identifier">queue</span>.pop()
+                      
+                      <span class="keyword">for</span> <span class="identifier">neighbour</span> <span class="keyword">in</span> <span class="identifier">wordList</span>:
+                          <span class="keyword">if</span> <span class="identifier">neighbour</span> <span class="keyword">not</span> <span class="keyword">in</span> <span class="identifier">visited</span> <span class="keyword">and</span> <span class="identifier">self</span>.<span class="identifier">is_adjacent</span>(<span class="identifier">neighbour</span>, <span class="identifier">current</span>):
+                              <span class="keyword">if</span> <span class="identifier">neighbour</span> == <span class="identifier">endWord</span>:
+                                  <span class="keyword">return</span> <span class="identifier">len</span>(<span class="identifier">path</span>) + <span class="literal">1</span>
+                              <span class="identifier">queue</span>.append((<span class="identifier">neighbour</span>, <span class="identifier">path</span> + [<span class="identifier">neighbour</span>]))
+                              <span class="identifier">visited</span>.add(<span class="identifier">neighbour</span>)
+                              
+                  <span class="keyword">return</span> <span class="literal">False</span>
+        </code>
+      </pre>
+    </div>
+  </body>
+</html>
 
