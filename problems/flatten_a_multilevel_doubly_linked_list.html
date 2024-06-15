@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flatten a Multi-level Doubly Linked List - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Flatten a Multi-level Doubly Linked List</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        You are given a doubly linked list which contains nodes that have a next
+        pointer, a previous pointer, and an additional child pointer. This child
+        pointer may or may not point to a separate doubly linked list, which may
+        have its own children, and so on, to produce a multilevel data
+        structure.
+      </p>
+      <p>
+        Flatten the list so that all nodes appear in a single-level, doubly
+        linked list. The nodes in the list should have all of their child
+        pointers set to null.
+      </p>
+      <p>Return the head of the flattened list.</p>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="comment">"""
+                # Definition for a Node.
+                class Node:
+                    def __init__(self, val, prev, next, child):
+                        self.val = val
+                        self.prev = prev
+                        self.next = next
+                        self.child = child
+                """</span>
+
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">flatten</span>(<span class="identifier">self</span>, <span class="identifier">head</span>: <span class="keyword">Optional</span>[<span class="identifier">Node</span>]) -> <span class="keyword">Optional</span>[<span class="identifier">Node</span>]:
+                        <span class="keyword">if</span> <span class="identifier">not</span> <span class="identifier">head</span>:
+                            <span class="keyword">return</span> <span class="identifier">head</span>
+                        
+                        <span class="identifier">dummy_head</span> = <span class="identifier">Node</span>(<span class="literal">0</span>, <span class="keyword">None</span>, <span class="identifier">head</span>, <span class="keyword">None</span>)
+                        <span class="identifier">prev</span> = <span class="identifier">dummy_head</span>
+                        
+                        <span class="identifier">stack</span> = [<span class="identifier">head</span>]
+                        
+                        <span class="keyword">while</span> <span class="identifier">stack</span>:
+                            <span class="identifier">current</span> = <span class="identifier">stack</span>.<span class="identifier">pop</span>()
+                            <span class="identifier">prev</span>.<span class="identifier">next</span> = <span class="identifier">current</span>
+                            <span class="identifier">current</span>.<span class="identifier">prev</span> = <span class="identifier">prev</span>
+            
+                            <span class="keyword">if</span> <span class="identifier">current</span>.<span class="identifier">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>(<span class="identifier">current</span>.<span class="identifier">next</span>)
+                                
+                            <span class="keyword">if</span> <span class="identifier">current</span>.<span class="identifier">child</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>(<span class="identifier">current</span>.<span class="identifier">child</span>)
+                                <span class="identifier">current</span>.<span class="identifier">child</span> = <span class="keyword">None</span>
+                                
+                            <span class="identifier">prev</span> = <span class="identifier">current</span>
+                        
+                        <span class="identifier">dummy_head</span>.<span class="identifier">next</span>.<span class="identifier">prev</span> = <span class="keyword">None</span>
+                        <span class="keyword">return</span> <span class="identifier">dummy_head</span>.<span class="identifier">next</span>
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>

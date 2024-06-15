@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Validate Binary Search Tree - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Validate Binary Search Tree</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        Given the root of a binary tree, determine if it is a valid binary
+        search tree (BST).
+      </p>
+      <p>A valid BST is defined as follows:</p>
+      <ul>
+        <li>
+          The left subtree of a node contains only nodes with keys less than the
+          node's key.
+        </li>
+        <li>
+          The right subtree of a node contains only nodes with keys greater than
+          the node's key.
+        </li>
+        <li>
+          Both the left and right subtrees must also be binary search trees.
+        </li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="keyword"># Definition for a binary tree node.</span>
+                <span class="keyword">class</span> <span class="identifier">TreeNode</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">val</span>=<span class="literal">0</span>, <span class="identifier">left</span>=<span class="keyword">None</span>, <span class="identifier">right</span>=<span class="keyword">None</span>):
+                        <span class="identifier">self</span>.<span class="identifier">val</span> = <span class="identifier">val</span>
+                        <span class="identifier">self</span>.<span class="identifier">left</span> = <span class="identifier">left</span>
+                        <span class="identifier">self</span>.<span class="identifier">right</span> = <span class="identifier">right</span>
+
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    
+                    <span class="keyword">def</span> <span class="identifier">in_order</span>(<span class="identifier">self</span>, <span class="identifier">node</span>):
+                        <span class="identifier">result</span> = []
+
+                        <span class="keyword">def</span> <span class="identifier">traverse</span>(<span class="identifier">node</span>):
+                            <span class="keyword">if</span> <span class="identifier">node</span>.<span class="identifier">left</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                                <span class="identifier">traverse</span>(<span class="identifier">node</span>.<span class="identifier">left</span>)
+                            <span class="identifier">result</span>.<span class="identifier">append</span>(<span class="identifier">node</span>.<span class="identifier">val</span>)
+                            <span class="keyword">if</span> <span class="identifier">node</span>.<span class="identifier">right</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                                <span class="identifier">traverse</span>(<span class="identifier">node</span>.<span class="identifier">right</span>)
+                            
+                        <span class="identifier">traverse</span>(<span class="identifier">node</span>)
+                        
+                        <span class="keyword">return</span> <span class="identifier">result</span>
+                                
+                    <span class="keyword">def</span> <span class="identifier">isValidBST</span>(<span class="identifier">self</span>, <span class="identifier">root</span>: <span class="identifier">Optional</span>[<span class="identifier">TreeNode</span>]) -> <span class="identifier">bool</span>:
+                        <span class="identifier">result</span> = <span class="identifier">self</span>.<span class="identifier">in_order</span>(<span class="identifier">root</span>)
+                        
+                        <span class="keyword">return</span> <span class="identifier">all</span>(<span class="identifier">result</span>[<span class="identifier">i</span>] <span class="keyword">&lt;</span> <span class="identifier">result</span>[<span class="identifier">i</span> + <span class="literal">1</span>] <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">len</span>(<span class="identifier">result</span>) <span class="keyword">-</span> <span class="literal">1</span>))
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>

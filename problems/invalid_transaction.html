@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invalid Transactions - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Invalid Transactions</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>A transaction is possibly invalid if:</p>
+      <ul>
+        <li>The amount exceeds $1000.</li>
+        <li>
+          It occurs within (and including) 60 minutes of another transaction
+          with the same name in a different city.
+        </li>
+      </ul>
+      <p>
+        You are given an array of strings <code>transactions</code> where each
+        <code>transactions[i]</code> consists of comma-separated values
+        representing the name, time (in minutes), amount, and city of the
+        transaction.
+      </p>
+      <p>
+        Return a list of transactions that are possibly invalid. You may return
+        the answer in any order.
+      </p>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="keyword">from</span> <span class="identifier">collections</span> <span class="keyword">import</span> <span class="identifier">defaultdict</span>
+                
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">invalidTransactions</span>(<span class="identifier">self</span>, <span class="identifier">transactions</span>: <span class="identifier">List</span>[<span class="identifier">str</span>]) -> <span class="identifier">List</span>[<span class="identifier">str</span>]:
+                        <span class="comment"># Parsing the transactions into a list of tuples</span>
+                        <span class="identifier">parsed_transactions</span> = []
+                        
+                        <span class="keyword">for</span> <span class="identifier">i</span>, <span class="identifier">trans</span> <span class="keyword">in</span> <span class="identifier">enumerate</span>(<span class="identifier">transactions</span>):
+                            <span class="identifier">name</span>, <span class="identifier">t</span>, <span class="identifier">amt</span>, <span class="identifier">city</span> = <span class="identifier">trans</span>.<span class="identifier">split</span>(<span class="string">","</span>)
+                            <span class="identifier">parsed_transactions</span>.<span class="identifier">append</span>((<span class="identifier">name</span>, <span class="identifier">int</span>(<span class="identifier">t</span>), <span class="identifier">int</span>(<span class="identifier">amt</span>), <span class="identifier">city</span>, <span class="identifier">i</span>))
+                        
+                        <span class="comment"># Dictionary to group transactions by name</span>
+                        <span class="identifier">transaction_dict</span> = <span class="identifier">defaultdict</span>(<span class="identifier">list</span>)
+                        
+                        <span class="keyword">for</span> <span class="identifier">trans</span> <span class="keyword">in</span> <span class="identifier">parsed_transactions</span>:
+                            <span class="identifier">transaction_dict</span>[<span class="identifier">trans</span>[<span class="literal">0</span>]].<span class="identifier">append</span>(<span class="identifier">trans</span>)
+                        
+                        <span class="comment"># Set to store indices of invalid transactions</span>
+                        <span class="identifier">invalid_indices</span> = <span class="identifier">set</span>()
+                        
+                        <span class="keyword">for</span> <span class="identifier">name</span>, <span class="identifier">trans</span> <span class="keyword">in</span> <span class="identifier">transaction_dict</span>.<span class="identifier">items</span>():
+                            <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">len</span>(<span class="identifier">trans</span>)):
+                                <span class="keyword">if</span> <span class="identifier">trans</span>[<span class="identifier">i</span>][<span class="literal">2</span>] <span class="operator">&gt;</span> <span class="literal">1000</span>:
+                                    <span class="identifier">invalid_indices</span>.<span class="identifier">add</span>(<span class="identifier">trans</span>[<span class="identifier">i</span>][<span class="literal">4</span>])
+                                <span class="keyword">for</span> <span class="identifier">j</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">len</span>(<span class="identifier">trans</span>)):
+                                    <span class="keyword">if</span> <span class="identifier">i</span> <span class="operator">!=</span> <span class="identifier">j</span> <span class="operator">and</span> <span class="identifier">abs</span>(<span class="identifier">trans</span>[<span class="identifier">i</span>][<span class="literal">1</span>] <span class="operator">-</span> <span class="identifier">trans</span>[<span class="identifier">j</span>][<span class="literal">1</span>]) <span class="operator">&lt;=</span> <span class="literal">60</span> <span class="operator">and</span> <span class="identifier">trans</span>[<span class="identifier">i</span>][<span class="literal">3</span>] <span class="operator">!=</span> <span class="identifier">trans</span>[<span class="identifier">j</span>][<span class="literal">3</span>]:
+                                        <span class="identifier">invalid_indices</span>.<span class="identifier">add</span>(<span class="identifier">trans</span>[<span class="identifier">i</span>][<span class="literal">4</span>])
+                                        <span class="identifier">invalid_indices</span>.<span class="identifier">add</span>(<span class="identifier">trans</span>[<span class="identifier">j</span>][<span class="literal">4</span>])
+                        
+                        <span class="comment"># Constructing the result list from original transactions using invalid indices</span>
+                        <span class="identifier">result</span> = [<span class="identifier">transactions</span>[<span class="identifier">i</span>] <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">invalid_indices</span>]
+                        
+                        <span class="keyword">return</span> <span class="identifier">result</span>
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser History - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Browser History</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>
+            You have a browser with one tab where you start on the homepage and you can visit another URL, get back in the history number of steps, or move forward in the history number of steps.
+        </p>
+        <p>Implement the <code>BrowserHistory</code> class:</p>
+        <ul>
+            <li><code>BrowserHistory(string homepage)</code> Initializes the object with the homepage of the browser.</li>
+            <li><code>void visit(string url)</code> Visits <code>url</code> from the current page. It clears up all the forward history.</li>
+            <li><code>string back(int steps)</code> Move steps back in history. If you can only return <code>x</code> steps in the history and <code>steps > x</code>, you will return only <code>x</code> steps. Return the current URL after moving back in history at most <code>steps</code>.</li>
+            <li><code>string forward(int steps)</code> Move steps forward in history. If you can only forward <code>x</code> steps in the history and <code>steps > x</code>, you will forward only <code>x</code> steps. Return the current URL after forwarding in history at most <code>steps</code>.</li>
+        </ul>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Node</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">url</span>):
+                        <span class="identifier">self</span>.<span class="identifier">url</span> = <span class="identifier">url</span>
+                        <span class="identifier">self</span>.<span class="identifier">next</span> = <span class="identifier">None</span>
+                        <span class="identifier">self</span>.<span class="identifier">prev</span> = <span class="identifier">None</span>
+                
+                <span class="keyword">class</span> <span class="identifier">BrowserHistory</span>:
+
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">homepage</span>: <span class="identifier">str</span>):
+                        <span class="identifier">new_node</span> = <span class="identifier">Node</span>(<span class="identifier">homepage</span>)
+                        <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">new_node</span>
+                        <span class="identifier">self</span>.<span class="identifier">current</span> = <span class="identifier">new_node</span>
+                        <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">next</span> = <span class="identifier">self</span>.<span class="identifier">current</span>
+                        <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">prev</span> = <span class="identifier">self</span>.<span class="identifier">head</span>
+
+                    <span class="keyword">def</span> <span class="identifier">visit</span>(<span class="identifier">self</span>, <span class="identifier">url</span>: <span class="identifier">str</span>) -> <span class="keyword">None</span>:
+                        <span class="identifier">new_node</span> = <span class="identifier">Node</span>(<span class="identifier">url</span>)
+                        <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">next</span> = <span class="identifier">new_node</span>
+                        <span class="identifier">new_node</span>.<span class="identifier">prev</span> = <span class="identifier">self</span>.<span class="identifier">current</span>
+                        <span class="identifier">self</span>.<span class="identifier">current</span> = <span class="identifier">new_node</span>
+
+                    <span class="keyword">def</span> <span class="identifier">back</span>(<span class="identifier">self</span>, <span class="identifier">steps</span>: <span class="identifier">int</span>) -> <span class="identifier">str</span>:
+                        <span class="keyword">if</span> <span class="identifier">steps</span> > <span class="literal">0</span>:
+                            <span class="keyword">for</span> <span class="identifier">_</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">steps</span>):
+                                <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">prev</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="identifier">None</span>:
+                                    <span class="identifier">self</span>.<span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">prev</span>
+                            <span class="keyword">return</span> <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">url</span>
+                        <span class="keyword">return</span> -<span class="literal">1</span>
+
+                    <span class="keyword">def</span> <span class="identifier">forward</span>(<span class="identifier">self</span>, <span class="identifier">steps</span>: <span class="identifier">int</span>) -> <span class="identifier">str</span>:
+                        <span class="keyword">if</span> <span class="identifier">steps</span> > <span class="literal">0</span>:
+                            <span class="keyword">for</span> <span class="identifier">_</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">steps</span>):
+                                <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="identifier">None</span>:
+                                    <span class="identifier">self</span>.<span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">next</span>
+                            <span class="keyword">return</span> <span class="identifier">self</span>.<span class="identifier">current</span>.<span class="identifier">url</span>
+
+                        <span class="keyword">return</span> -<span class="literal">1</span>
+            </code>
+        </pre>
+    </div>
+</body
