@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Schedule - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Course Schedule</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        There are a total of <code>numCourses</code> courses you have to take, labeled from 0 to <code>numCourses - 1</code>. You are given an array <code>prerequisites</code> where <code>prerequisites[i] = [a<sub>i</sub>, b<sub>i</sub>]</code> indicates that you must take course <code>b<sub>i</sub></code> first if you want to take course <code>a<sub>i</sub></code>.
+      </p>
+      <p>
+        For example, the pair <code>[0, 1]</code>, indicates that to take course 0 you have to first take course 1. Return true if you can finish all courses. Otherwise, return false.
+      </p>
+      <pre class="shell">
+        <code>
+          Example 1:
+          Input: numCourses = 2, prerequisites = [[1,0]]
+          Output: true
+          Explanation: There are a total of 2 courses to take. 
+          To take course 1 you should have finished course 0. So it is possible.
+
+          Example 2:
+          Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+          Output: false
+          Explanation: There are a total of 2 courses to take. 
+          To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+        </code>
+      </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+        <code>
+          <span class="keyword">class</span> <span class="identifier">Solution</span>:
+              
+              <span class="keyword">def</span> <span class="identifier">dfs</span>(<span class="identifier">self</span>, <span class="identifier">graph</span>, <span class="identifier">rec_stack</span>, <span class="identifier">visited</span>, <span class="identifier">stack</span>, <span class="identifier">vertex</span>):
+                  <span class="identifier">visited</span>.<span class="identifier">add</span>(<span class="identifier">vertex</span>)
+                  <span class="identifier">rec_stack</span>.<span class="identifier">add</span>(<span class="identifier">vertex</span>)
+                  
+                  <span class="keyword">for</span> <span class="identifier">neighbour</span> <span class="keyword">in</span> <span class="identifier">graph</span>.<span class="identifier">get</span>(<span class="identifier">vertex</span>, []):
+                      <span class="keyword">if</span> <span class="identifier">neighbour</span> <span class="keyword">not</span> <span class="keyword">in</span> <span class="identifier">visited</span>:
+                          <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">dfs</span>(<span class="identifier">graph</span>, <span class="identifier">rec_stack</span>, <span class="identifier">visited</span>, <span class="identifier">stack</span>, <span class="identifier">neighbour</span>):
+                              <span class="keyword">return</span> <span class="literal">True</span>
+                      <span class="keyword">elif</span> <span class="identifier">neighbour</span> <span class="keyword">in</span> <span class="identifier">rec_stack</span>:
+                          <span class="keyword">return</span> <span class="literal">True</span>
+                      
+                  <span class="identifier">stack</span>.<span class="identifier">append</span>(<span class="identifier">vertex</span>)
+                  <span class="identifier">rec_stack</span>.<span class="identifier">remove</span>(<span class="identifier">vertex</span>)
+          
+                  <span class="keyword">return</span> <span class="literal">False</span>
+              
+              <span class="keyword">def</span> <span class="identifier">topological_sort</span>(<span class="identifier">self</span>, <span class="identifier">graph</span>):
+                  <span class="identifier">rec_stack</span> = <span class="identifier">set</span>()
+                  <span class="identifier">visited</span> = <span class="identifier">set</span>()
+                  <span class="identifier">stack</span> = []
+                  
+                  <span class="keyword">for</span> <span class="identifier">vertex</span> <span class="keyword">in</span> <span class="identifier">graph</span>:
+                      <span class="keyword">if</span> <span class="identifier">vertex</span> <span class="keyword">not</span> <span class="keyword">in</span> <span class="identifier">visited</span>:
+                          <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">dfs</span>(<span class="identifier">graph</span>, <span class="identifier">rec_stack</span>, <span class="identifier">visited</span>, <span class="identifier">stack</span>, <span class="identifier">vertex</span>):
+                              <span class="keyword">return</span> []
+                          
+                  <span class="keyword">return</span> <span class="identifier">stack</span>[::-1]
+              
+              <span class="keyword">def</span> <span class="identifier">canFinish</span>(<span class="identifier">self</span>, <span class="identifier">numCourses</span>: <span class="string">int</span>, <span class="identifier">prerequisites</span>: <span class="string">List</span>[<span class="string">List</span>[<span class="string">int</span>]]) -> <span class="string">bool</span>:
+                  <span class="identifier">graph</span> = {<span class="identifier">i</span>: [] <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">numCourses</span>)}
+                  <span class="keyword">for</span> <span class="identifier">cur</span>, <span class="identifier">pre</span> <span class="keyword">in</span> <span class="identifier">prerequisites</span>:
+                      <span class="identifier">graph</span>[<span class="identifier">cur</span>].<span class="identifier">append</span>(<span class="identifier">pre</span>)
+                      
+                  <span class="identifier">can</span> = <span class="identifier">self</span>.<span class="identifier">topological_sort</span>(<span class="identifier">graph</span>)
+                  <span class="keyword">if</span> <span class="identifier">can</span>:
+                      <span class="keyword">return</span> <span class="literal">True</span>
+                  <span class="keyword">return</span> <span class="literal">False</span>
+        </code>
+      </pre>
+    </div>
+  </body>
+</html>

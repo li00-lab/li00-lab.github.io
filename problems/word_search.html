@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Word Search</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>
+            Given an m x n grid of characters <code>board</code> and a string <code>word</code>, return <code>true</code> if <code>word</code> exists in the grid.
+        </p>
+        <p>
+            The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+        </p>
+        <pre class="shell">
+            <code>
+                Example 1:
+                Input: board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = "ABCCED"
+                Output: true
+
+                Example 2:
+                Input: board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = "SEE"
+                Output: true
+
+                Example 3:
+                Input: board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = "ABCB"
+                Output: false
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">exist</span>(<span class="identifier">self</span>, <span class="identifier">board</span>: <span class="identifier">List</span>[<span class="identifier">List</span>[<span class="identifier">str</span>]], <span class="identifier">word</span>: <span class="identifier">str</span>) -> <span class="identifier">bool</span>:
+                        <span class="identifier">rows</span>, <span class="identifier">cols</span> = <span class="identifier">len</span>(<span class="identifier">board</span>), <span class="identifier">len</span>(<span class="identifier">board</span>[<span class="literal">0</span>])
+                        
+                        <span class="keyword">def</span> <span class="identifier">dfs</span>(<span class="identifier">start_r</span>, <span class="identifier">start_c</span>):
+                            <span class="identifier">stack</span> = [(<span class="identifier">start_r</span>, <span class="identifier">start_c</span>, <span class="literal">0</span>, <span class="identifier">set</span>())]
+                            
+                            <span class="keyword">while</span> <span class="identifier">stack</span>:
+                                <span class="identifier">r</span>, <span class="identifier">c</span>, <span class="identifier">idx</span>, <span class="identifier">visited</span> = <span class="identifier">stack</span>.<span class="identifier">pop</span>()
+                                
+                                <span class="keyword">if</span> <span class="identifier">idx</span> == <span class="identifier">len</span>(<span class="identifier">word</span>):
+                                    <span class="keyword">return</span> <span class="literal">True</span>
+                                
+                                <span class="keyword">if</span> (<span class="identifier">r</span> < <span class="literal">0</span> <span class="keyword">or</span> <span class="identifier">r</span> >= <span class="identifier">rows</span> <span class="keyword">or</span> <span class="identifier">c</span> < <span class="literal">0</span> <span class="keyword">or</span> <span class="identifier">c</span> >= <span class="identifier">cols</span> <span class="keyword">or</span> <span class="identifier">board</span>[<span class="identifier">r</span>][<span class="identifier">c</span>] != <span class="identifier">word</span>[<span class="identifier">idx</span>] <span class="keyword">or</span> (<span class="identifier">r</span>, <span class="identifier">c</span>) <span class="keyword">in</span> <span class="identifier">visited</span>):
+                                    <span class="keyword">continue</span>
+                                
+                                <span class="identifier">visited</span>.<span class="identifier">add</span>((<span class="identifier">r</span>, <span class="identifier">c</span>))
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>((<span class="identifier">r</span>+<span class="literal">1</span>, <span class="identifier">c</span>, <span class="identifier">idx</span>+<span class="literal">1</span>, <span class="identifier">visited</span>.<span class="identifier">copy</span>()))
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>((<span class="identifier">r</span>-<span class="literal">1</span>, <span class="identifier">c</span>, <span class="identifier">idx</span>+<span class="literal">1</span>, <span class="identifier">visited</span>.<span class="identifier">copy</span>()))
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>((<span class="identifier">r</span>, <span class="identifier">c</span>+<span class="literal">1</span>, <span class="identifier">idx</span>+<span class="literal">1</span>, <span class="identifier">visited</span>.<span class="identifier">copy</span>()))
+                                <span class="identifier">stack</span>.<span class="identifier">append</span>((<span class="identifier">r</span>, <span class="identifier">c</span>-<span class="literal">1</span>, <span class="identifier">idx</span>+<span class="literal">1</span>, <span class="identifier">visited</span>.<span class="identifier">copy</span>()))
+                                
+                            <span class="keyword">return</span> <span class="literal">False</span>
+                        
+                        <span class="keyword">for</span> <span class="identifier">r</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">rows</span>):
+                            <span class="keyword">for</span> <span class="identifier">c</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">cols</span>):
+                                <span class="keyword">if</span> <span class="identifier">dfs</span>(<span class="identifier">r</span>, <span class="identifier">c</span>):
+                                    <span class="keyword">return</span> <span class="literal">True</span>
+                        <span class="keyword">return</span> <span class="literal">False</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>
 

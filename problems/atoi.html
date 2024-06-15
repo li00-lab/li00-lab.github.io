@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATOI - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>ATOI</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        Implement the <code>myAtoi(string s)</code> function, which converts a
+        string to a 32-bit signed integer.
+      </p>
+      <p>The algorithm for <code>myAtoi(string s)</code> is as follows:</p>
+      <ol>
+        <li>Ignore any leading whitespace (" ").</li>
+        <li>
+          Determine the sign by checking if the next character is '-' or '+',
+          assuming positivity if neither is present.
+        </li>
+        <li>
+          Read the integer by skipping leading zeros until a non-digit character
+          is encountered or the end of the string is reached. If no digits were
+          read, then the result is 0.
+        </li>
+        <li>
+          If the integer is out of the 32-bit signed integer range
+          [-2<sup>31</sup>, 2<sup>31</sup> - 1], then round the integer to
+          remain in the range. Specifically, integers less than -2<sup>31</sup>
+          should be rounded to -2<sup>31</sup>, and integers greater than 2<sup
+            >31</sup
+          >
+          - 1 should be rounded to 2<sup>31</sup> - 1.
+        </li>
+        <li>Return the integer as the final result.</li>
+      </ol>
+      <pre class="shell">
+            <code>
+                Example 1:
+                Input: s = "42"
+                Output: 42
+
+                Example 2:
+                Input: s = "   -42"
+                Output: -42
+
+                Example 3:
+                Input: s = "4193 with words"
+                Output: 4193
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">myAtoi</span>(<span class="identifier">self</span>, <span class="identifier">s</span>: <span class="identifier">str</span>) -> <span class="identifier">int</span>:
+                        <span class="identifier">s</span> = <span class="identifier">s</span>.<span class="identifier">strip</span>()
+                        
+                        <span class="keyword">if</span> <span class="identifier">not</span> <span class="identifier">s</span>:
+                            <span class="keyword">return</span> <span class="literal">0</span>
+                        
+                        <span class="identifier">res</span> = <span class="literal">0</span>
+                        <span class="identifier">sign</span> = <span class="literal">1</span>
+                        <span class="identifier">idx</span> = <span class="literal">0</span>
+                        
+                        <span class="keyword">if</span> <span class="identifier">s</span>[<span class="identifier">idx</span>] == <span class="string">"-"</span>:
+                            <span class="identifier">sign</span> = <span class="literal">-1</span>
+                            <span class="identifier">idx</span> = <span class="literal">1</span>
+                        <span class="keyword">elif</span> <span class="identifier">s</span>[<span class="identifier">idx</span>] == <span class="string">"+"</span>:
+                            <span class="identifier">idx</span> = <span class="literal">1</span>
+                            
+                        <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">idx</span>, <span class="identifier">len</span>(<span class="identifier">s</span>)):
+                            <span class="keyword">if</span> <span class="identifier">s</span>[<span class="identifier">i</span>].<span class="identifier">isalpha</span>() <span class="keyword">or</span> <span class="identifier">not</span> <span class="identifier">s</span>[<span class="identifier">i</span>].<span class="identifier">isalnum</span>():
+                                <span class="keyword">break</span>
+                            <span class="identifier">res</span> = <span class="identifier">res</span> * <span class="literal">10</span> + (<span class="identifier">ord</span>(<span class="identifier">s</span>[<span class="identifier">i</span>]) - <span class="identifier">ord</span>(<span class="string">"0"</span>))
+                            
+                        <span class="identifier">res</span> = <span class="identifier">res</span> * <span class="identifier">sign</span>
+                            
+                        <span class="identifier">INT_MIN</span>, <span class="identifier">INT_MAX</span> = <span class="literal">-2</span>**<span class="literal">31</span>, <span class="literal">2</span>**<span class="literal">31</span> - <span class="literal">1</span>
+                        
+                        <span class="keyword">if</span> <span class="identifier">res</span> < <span class="identifier">INT_MIN</span>:
+                            <span class="keyword">return</span> <span class="identifier">INT_MIN</span>
+                        
+                        <span class="keyword">if</span> <span class="identifier">res</span> > <span class="identifier">INT_MAX</span>:
+                            <span class="keyword">return</span> <span class="identifier">INT_MAX</span>
+                        
+                        <span class="keyword">return</span> <span class="identifier">res</span>
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>
