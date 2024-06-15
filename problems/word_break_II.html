@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Break II - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Word Break II</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>
+        Given a string <code>s</code> and a dictionary of strings
+        <code>wordDict</code>, add spaces in <code>s</code> to construct a
+        sentence where each word is a valid dictionary word. Return all such
+        possible sentences in any order.
+      </p>
+      <p>
+        Note that the same word in the dictionary may be reused multiple times
+        in the segmentation.
+      </p>
+      <pre class="shell">
+            <code>
+                Example 1:
+                Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+                Output: ["cats and dog","cat sand dog"]
+
+                Example 2:
+                Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+                Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+                Explanation: Note that you are allowed to reuse a dictionary word.
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">wordBreak</span>(<span class="identifier">self</span>, <span class="identifier">s</span>: <span class="identifier">str</span>, <span class="identifier">wordDict</span>: <span class="identifier">List</span>[<span class="identifier">str</span>]) -> <span class="identifier">List</span>[<span class="identifier">str</span>]:
+                        <span class="identifier">word_set</span> = <span class="identifier">set</span>(<span class="identifier">wordDict</span>)
+                        <span class="identifier">stack</span> = [(<span class="literal">0</span>, [])]
+                        <span class="identifier">result</span> = []
+                        
+                        <span class="keyword">while</span> <span class="identifier">stack</span>:
+                            <span class="identifier">start</span>, <span class="identifier">path</span> = <span class="identifier">stack</span>.<span class="identifier">pop</span>()
+                            
+                            <span class="keyword">if</span> <span class="identifier">start</span> == <span class="identifier">len</span>(<span class="identifier">s</span>):
+                                <span class="identifier">result</span>.<span class="identifier">append</span>(<span class="string">" "</span>.<span class="identifier">join</span>(<span class="identifier">path</span>))
+                                <span class="keyword">continue</span>
+                                
+                            <span class="keyword">for</span> <span class="identifier">end</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">start</span>+<span class="literal">1</span>, <span class="identifier">len</span>(<span class="identifier">s</span>)+<span class="literal">1</span>):
+                                <span class="identifier">word</span> = <span class="identifier">s</span>[<span class="identifier">start</span>:<span class="identifier">end</span>]
+                                <span class="keyword">if</span> <span class="identifier">word</span> <span class="keyword">in</span> <span class="identifier">word_set</span>:
+                                    <span class="identifier">stack</span>.<span class="identifier">append</span>((<span class="identifier">end</span>, <span class="identifier">path</span> + [<span class="identifier">word</span>]))
+                                    
+                        <span class="keyword">return</span> <span class="identifier">result</span>
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>
