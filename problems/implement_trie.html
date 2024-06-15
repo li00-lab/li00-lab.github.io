@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implement Trie - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Implement Trie (Prefix Tree)</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>
+            A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
+        </p>
+        <p>Implement the <code>Trie</code> class:</p>
+        <ul>
+            <li><code>Trie()</code> Initializes the trie object.</li>
+            <li><code>void insert(String word)</code> Inserts the string <code>word</code> into the trie.</li>
+            <li><code>boolean search(String word)</code> Returns <code>true</code> if the string <code>word</code> is in the trie (i.e., was inserted before), and <code>false</code> otherwise.</li>
+            <li><code>boolean startsWith(String prefix)</code> Returns <code>true</code> if there is a previously inserted string <code>word</code> that has the prefix <code>prefix</code>, and <code>false</code> otherwise.</li>
+        </ul>
+        <p>Example 1:</p>
+        <pre class="python">
+            <code>
+                Input
+                ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+                [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+                Output
+                [null, null, true, false, true, null, true]
+                
+                Explanation
+                Trie trie = new Trie();
+                trie.insert("apple");
+                trie.search("apple");   // return True
+                trie.search("app");     // return False
+                trie.startsWith("app"); // return True
+                trie.insert("app");
+                trie.search("app");     // return True
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="comment"># Definition for a trie node.</span>
+                <span class="keyword">class</span> <span class="identifier">TrieNode</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>):
+                        <span class="identifier">self</span>.<span class="identifier">children</span> = {}
+                        <span class="identifier">self</span>.<span class="identifier">is_end_word</span> = <span class="keyword">False</span>
+                
+                <span class="keyword">class</span> <span class="identifier">Trie</span>:
+                
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>):
+                        <span class="identifier">self</span>.<span class="identifier">root</span> = <span class="identifier">TrieNode</span>()
+                
+                    <span class="keyword">def</span> <span class="identifier">insert</span>(<span class="identifier">self</span>, <span class="identifier">word</span>: <span class="identifier">str</span>) -> <span class="keyword">None</span>:
+                        <span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">root</span>
+                        <span class="keyword">for</span> <span class="identifier">char</span> <span class="keyword">in</span> <span class="identifier">word</span>:
+                            <span class="keyword">if</span> <span class="identifier">char</span> <span class="keyword">not</span> <span class="keyword">in</span> <span class="identifier">current</span>.<span class="identifier">children</span>:
+                                <span class="identifier">current</span>.<span class="identifier">children</span>[<span class="identifier">char</span>] = <span class="identifier">TrieNode</span>()
+                            <span class="identifier">current</span> = <span class="identifier">current</span>.<span class="identifier">children</span>[<span class="identifier">char</span>]
+                        <span class="identifier">current</span>.<span class="identifier">is_end_word</span> = <span class="keyword">True</span>
+                
+                    <span class="keyword">def</span> <span class="identifier">search</span>(<span class="identifier">self</span>, <span class="identifier">word</span>: <span class="identifier">str</span>) -> <span class="keyword">bool</span>:
+                        <span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">root</span>
+                        <span class="keyword">for</span> <span class="identifier">char</span> <span class="keyword">in</span> <span class="identifier">word</span>:
+                            <span class="identifier">current</span> = <span class="identifier">current</span>.<span class="identifier">children</span>.get(<span class="identifier">char</span>)
+                            <span class="keyword">if</span> <span class="identifier">current</span> <span class="keyword">is</span> <span class="keyword">None</span>:
+                                <span class="keyword">return</span> <span class="keyword">False</span>
+                        <span class="keyword">return</span> <span class="identifier">current</span>.<span class="identifier">is_end_word</span>
+                
+                    <span class="keyword">def</span> <span class="identifier">startsWith</span>(<span class="identifier">self</span>, <span class="identifier">prefix</span>: <span class="identifier">str</span>) -> <span class="keyword">bool</span>:
+                        <span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">root</span>
+                        <span class="keyword">for</span> <span class="identifier">char</span> <span class="keyword">in</span> <span class="identifier">prefix</span>:
+                            <span class="identifier">current</span> = <span class="identifier">current</span>.<span class="identifier">children</span>.get(<span class="identifier">char</span>)
+                            <span class="keyword">if</span> <span class="identifier">current</span> <span class="keyword">is</span> <span class="keyword">None</span>:
+                                <span class="keyword">return</span> <span class="keyword">False</span>
+                        <span class="keyword">return</span> <span class="keyword">True</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>
