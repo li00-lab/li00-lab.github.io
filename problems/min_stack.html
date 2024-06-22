@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Stack - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Min Stack</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>
+        <p>Implement the <code>MinStack</code> class:</p>
+        <ul>
+            <li><code>MinStack()</code> initializes the stack object.</li>
+            <li><code>void push(int val)</code> pushes the element <code>val</code> onto the stack.</li>
+            <li><code>void pop()</code> removes the element on the top of the stack.</li>
+            <li><code>int top()</code> gets the top element of the stack.</li>
+            <li><code>int getMin()</code> retrieves the minimum element in the stack.</li>
+        </ul>
+        <p>You must implement a solution with <code>O(1)</code> time complexity for each function.</p>
+    </div>
+    <div class="section">
+        <h2>Examples</h2>
+        <pre class="python">
+            <code>
+                # Example
+                MinStack minStack = new MinStack();
+                minStack.push(-2);
+                minStack.push(0);
+                minStack.push(-3);
+                minStack.getMin(); // return -3
+                minStack.pop();
+                minStack.top();    // return 0
+                minStack.getMin(); // return -2
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Node</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">value</span>, <span class="identifier">min_value</span>):
+                        <span class="identifier">self</span>.<span class="identifier">min_value</span> = <span class="identifier">min_value</span>
+                        <span class="identifier">self</span>.<span class="identifier">value</span> = <span class="identifier">value</span>
+                        <span class="identifier">self</span>.<span class="identifier">next</span> = <span class="literal">None</span>
+                        <span class="identifier">self</span>.<span class="identifier">prev</span> = <span class="literal">None</span>
+
+                <span class="keyword">class</span> <span class="identifier">MinStack</span>:
+
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>):
+                        <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="literal">None</span>
+                        <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="literal">None</span>
+                    
+                    <span class="keyword">def</span> <span class="identifier">push</span>(<span class="identifier">self</span>, <span class="identifier">val</span>: <span class="identifier">int</span>) -> <span class="literal">None</span>:
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> <span class="keyword">is</span> <span class="literal">None</span>:
+                            <span class="identifier">new_node</span> = <span class="identifier">Node</span>(<span class="identifier">val</span>, <span class="identifier">val</span>)
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">new_node</span>
+                            <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="identifier">new_node</span>
+                        <span class="keyword">else</span>:
+                            <span class="identifier">min_value</span> = <span class="identifier">min</span>(<span class="identifier">val</span>, <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">min_value</span>)
+                            <span class="identifier">new_node</span> = <span class="identifier">Node</span>(<span class="identifier">val</span>, <span class="identifier">min_value</span>)
+                            <span class="identifier">new_node</span>.<span class="identifier">next</span> = <span class="identifier">self</span>.<span class="identifier">head</span>
+                            <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">prev</span> = <span class="identifier">new_node</span>
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">new_node</span>
+                    
+                    <span class="keyword">def</span> <span class="identifier">pop</span>(<span class="identifier">self</span>) -> <span class="literal">None</span>:
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> <span class="keyword">is</span> <span class="literal">None</span>:
+                            <span class="keyword">return</span> <span class="literal">None</span>
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> == <span class="identifier">self</span>.<span class="identifier">tail</span>:
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="literal">None</span>
+                            <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="literal">None</span>
+                        <span class="keyword">else</span>:
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">next</span>
+                            <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">prev</span> = <span class="literal">None</span>
+                    
+                    <span class="keyword">def</span> <span class="identifier">top</span>(<span class="identifier">self</span>) -> <span class="identifier">int</span>:
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> <span class="keyword">is not</span> <span class="literal">None</span>:
+                            <span class="keyword">return</span> <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">value</span>
+                        <span class="keyword">return</span> <span class="literal">None</span>
+                    
+                    <span class="keyword">def</span> <span class="identifier">getMin</span>(<span class="identifier">self</span>) -> <span class="identifier">int</span>:
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> <span class="keyword">is not</span> <span class="literal">None</span>:
+                            <span class="keyword">return</span> <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">min_value</span>
+                        <span class="keyword">return</span> <span class="literal">None</span>
+                    
+                    <span class="comment"># Your MinStack object will be instantiated and called as such:</span>
+                    <span class="comment"># obj = MinStack()</span>
+                    <span class="comment"># obj.push(val)</span>
+                    <span class="comment"># obj.pop()</span>
+                    <span class="comment"># param_3 = obj.top()</span>
+                    <span class="comment"># param_4 = obj.getMin()</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>

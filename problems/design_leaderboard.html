@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - LeetCode Solution</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Add syntax highlighting styles */
+      .python {
+        color: #333;
+      }
+      .python .keyword {
+        color: #008000;
+      }
+      .python .string {
+        color: #ba2121;
+      }
+      .python .identifier {
+        color: #0000ff;
+      }
+      .python .literal {
+        color: #ba2121;
+      }
+      .python .comment {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Leaderboard</h1>
+    <div class="section">
+      <h2>Problem Statement</h2>
+      <p>Design a Leaderboard class, which has 3 functions:</p>
+      <ul>
+        <li>
+          <code>addScore(playerId, score)</code>: Update the leaderboard by
+          adding score to the given player's score. If there is no player with
+          such id in the leaderboard, add him to the leaderboard with the given
+          score.
+        </li>
+        <li><code>top(K)</code>: Return the score sum of the top K players.</li>
+        <li>
+          <code>reset(playerId)</code>: Reset the score of the player with the
+          given id to 0 (in other words erase it from the leaderboard). It is
+          guaranteed that the player was added to the leaderboard before calling
+          this function.
+        </li>
+      </ul>
+      <p>Initially, the leaderboard is empty.</p>
+    </div>
+    <div class="section">
+      <h2>Examples</h2>
+      <pre class="python">
+            <code>
+                # Example usage:
+                obj = Leaderboard()
+                obj.addScore(1, 73)
+                obj.addScore(2, 56)
+                obj.addScore(3, 39)
+                obj.addScore(4, 51)
+                obj.addScore(5, 4)
+                print(obj.top(1))  # return 73
+                obj.reset(1)
+                obj.reset(2)
+                obj.addScore(2, 51)
+                print(obj.top(3))  # return 141
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+      <h2>Solution</h2>
+      <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Node</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">playerId</span>, <span class="identifier">score</span>):
+                        <span class="identifier">self</span>.<span class="identifier">playerId</span> = <span class="identifier">playerId</span>
+                        <span class="identifier">self</span>.<span class="identifier">score</span> = <span class="identifier">score</span>
+                        <span class="identifier">self</span>.<span class="identifier">next</span> = <span class="literal">None</span>
+                        <span class="identifier">self</span>.<span class="identifier">prev</span> = <span class="literal">None</span>
+                
+                <span class="keyword">class</span> <span class="identifier">LinkedList</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>):
+                        <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="literal">None</span>
+                        <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="literal">None</span>
+                
+                    <span class="keyword">def</span> <span class="identifier">insert</span>(<span class="identifier">self</span>, <span class="identifier">node</span>):
+                        <span class="keyword">if</span> <span class="identifier">self</span>.<span class="identifier">head</span> <span class="keyword">is</span> <span class="literal">None</span>:
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">node</span>
+                            <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="identifier">node</span>
+                        <span class="keyword">else</span>:
+                            <span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">head</span>
+                            <span class="keyword">while</span> <span class="identifier">current</span> <span class="keyword">is not</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="identifier">current</span>.<span class="identifier">score</span> <span class="keyword">></span> <span class="identifier">node</span>.<span class="identifier">score</span>:
+                                <span class="identifier">current</span> = <span class="identifier">current</span>.<span class="identifier">next</span>
+                        
+                            <span class="keyword">if</span> <span class="identifier">current</span> <span class="keyword">is</span> <span class="literal">None</span>:
+                                <span class="identifier">self</span>.<span class="identifier">tail</span>.<span class="identifier">next</span> = <span class="identifier">node</span>
+                                <span class="identifier">node</span>.<span class="identifier">prev</span> = <span class="identifier">self</span>.<span class="identifier">tail</span>
+                                <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="identifier">node</span>
+                            <span class="keyword">elif</span> <span class="identifier">current</span> <span class="keyword">==</span> <span class="identifier">self</span>.<span class="identifier">head</span>:
+                                <span class="identifier">node</span>.<span class="identifier">next</span> = <span class="identifier">self</span>.<span class="identifier">head</span>
+                                <span class="identifier">self</span>.<span class="identifier">head</span>.<span class="identifier">prev</span> = <span class="identifier">node</span>
+                                <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">node</span>
+                            <span class="keyword">else</span>:
+                                <span class="identifier">prev</span> = <span class="identifier">current</span>.<span class="identifier">prev</span>
+                                <span class="identifier">node</span>.<span class="identifier">next</span> = <span class="identifier">current</span>
+                                <span class="identifier">node</span>.<span class="identifier">prev</span> = <span class="identifier">prev</span>
+                                <span class="identifier">prev</span>.<span class="identifier">next</span> = <span class="identifier">node</span>
+                                <span class="identifier">current</span>.<span class="identifier">prev</span> = <span class="identifier">node</span>
+                
+                    <span class="keyword">def</span> <span class="identifier">remove</span>(<span class="identifier">self</span>, <span class="identifier">node</span>):
+                        <span class="keyword">if</span> <span class="identifier">node</span>.<span class="identifier">prev</span> <span class="keyword">is not</span> <span class="literal">None</span>:
+                            <span class="identifier">node</span>.<span class="identifier">prev</span>.<span class="identifier">next</span> = <span class="identifier">node</span>.<span class="identifier">next</span>
+                        <span class="keyword">if</span> <span class="identifier">node</span>.<span class="identifier">next</span> <span class="keyword">is not</span> <span class="literal">None</span>:
+                            <span class="identifier">node</span>.<span class="identifier">next</span>.<span class="identifier">prev</span> = <span class="identifier">node</span>.<span class="identifier">prev</span>
+                        <span class="keyword">if</span> <span class="identifier">node</span> <span class="keyword">==</span> <span class="identifier">self</span>.<span class="identifier">head</span>:
+                            <span class="identifier">self</span>.<span class="identifier">head</span> = <span class="identifier">node</span>.<span class="identifier">next</span>
+                        
+                        <span class="keyword">if</span> <span class="identifier">node</span> <span class="keyword">==</span> <span class="identifier">self</span>.<span class="identifier">tail</span>:
+                            <span class="identifier">self</span>.<span class="identifier">tail</span> = <span class="identifier">node</span>.<span class="identifier">prev</span>
+                        
+                        <span class="identifier">node</span>.<span class="identifier">next</span>, <span class="identifier">node</span>.<span class="identifier">prev</span> = <span class="literal">None</span>, <span class="literal">None</span>
+                
+                <span class="keyword">class</span> <span class="identifier">Leaderboard</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>):
+                        <span class="identifier">self</span>.<span class="identifier">list</span> = <span class="identifier">LinkedList</span>()
+                        <span class="identifier">self</span>.<span class="identifier">scores</span> = {}
+                
+                    <span class="keyword">def</span> <span class="identifier">addScore</span>(<span class="identifier">self</span>, <span class="identifier">playerId</span>: <span class="keyword">int</span>, <span class="identifier">score</span>: <span class="keyword">int</span>) -> <span class="keyword">None</span>:
+                        <span class="keyword">if</span> <span class="identifier">playerId</span> <span class="keyword">in</span> <span class="identifier">self</span>.<span class="identifier">scores</span>:
+                            <span class="identifier">node</span> = <span class="identifier">self</span>.<span class="identifier">scores</span>[<span class="identifier">playerId</span>]
+                            <span class="identifier">self</span>.<span class="identifier">list</span>.<span class="identifier">remove</span>(<span class="identifier">node</span>)
+                            <span class="identifier">node</span>.<span class="identifier">score</span> += <span class="identifier">score</span>
+                        <span class="keyword">else</span>:
+                            <span class="identifier">node</span> = <span class="identifier">Node</span>(<span class="identifier">playerId</span>, <span class="identifier">score</span>)
+                            <span class="identifier">self</span>.<span class="identifier">scores</span>[<span class="identifier">playerId</span>] = <span class="identifier">node</span>
+                        <span class="identifier">self</span>.<span class="identifier">list</span>.<span class="identifier">insert</span>(<span class="identifier">node</span>)
+                
+                    <span class="keyword">def</span> <span class="identifier">top</span>(<span class="identifier">self</span>, <span class="identifier">K</span>: <span class="keyword">int</span>) -> <span class="keyword">int</span>:
+                        <span class="identifier">result</span> = []
+                        <span class="identifier">current</span> = <span class="identifier">self</span>.<span class="identifier">list</span>.<span class="identifier">head</span>
+                        <span class="keyword">while</span> <span class="identifier">current</span> <span class="keyword">is not</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="identifier">K</span> <span class="keyword">></span> <span class="literal">0</span>:
+                            <span class="identifier">result</span>.<span class="identifier">append</span>(<span class="identifier">current</span>.<span class="identifier">score</span>)
+                            <span class="identifier">current</span> = <span class="identifier">current</span>.<span class="identifier">next</span>
+                            <span class="identifier">K</span> -= <span class="literal">1</span>
+                        <span class="keyword">return</span> <span class="identifier">sum</span>(<span class="identifier">result</span>)
+                
+                    <span class="keyword">def</span> <span class="identifier">reset</span>(<span class="identifier">self</span>, <span class="identifier">playerId</span>: <span class="keyword">int</span>) -> <span class="keyword">None</span>:
+                        <span class="keyword">if</span> <span class="identifier">playerId</span> <span class="keyword">in</span> <span class="identifier">self</span>.<span class="identifier">scores</span>:
+                            <span class="identifier">node</span> = <span class="identifier">self</span>.<span class="identifier">scores</span>[<span class="identifier">playerId</span>]
+                            <span class="identifier">self</span>.<span class="identifier">list</span>.<span class="identifier">remove</span>(<span class="identifier">node</span>)
+                            <span class="keyword">del</span> <span class="identifier">self</span>.<span class="identifier">scores</span>[<span class="identifier">playerId</span>]
+                
+                <span class="comment"># Your Leaderboard object will be instantiated and called as such:</span>
+                <span class="comment"># obj = Leaderboard()</span>
+                <span class="comment"># obj.addScore(playerId,score)</span>
+                <span class="comment"># param_2 = obj.top(K)</span>
+                <span class="comment"># obj.reset(playerId)</span>
+            </code>
+        </pre>
+    </div>
+  </body>
+</html>

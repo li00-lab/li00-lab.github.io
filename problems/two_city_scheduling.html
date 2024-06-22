@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two City Scheduling - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Two City Scheduling</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>A company is planning to interview 2n people. Given the array <code>costs</code> where <code>costs[i] = [aCost<i>i</i>, bCost<i>i</i>]</code>, the cost of flying the <i>i</i>th person to city <b>a</b> is <code>aCost<i>i</i></code>, and the cost of flying the <i>i</i>th person to city <b>b</b> is <code>bCost<i>i</i></code>.</p>
+        <p>Return the minimum cost to fly every person to a city such that exactly <b>n</b> people arrive in each city.</p>
+        <h3>Examples</h3>
+        <pre class="python">
+            <code>
+                Input: costs = [[10,20],[30,200],[50,50],[30,50]]
+                Output: 110
+                Explanation:
+                The first person goes to city a for a cost of 10.
+                The second person goes to city a for a cost of 30.
+                The third person goes to city b for a cost of 50.
+                The fourth person goes to city b for a cost of 50.
+                The minimum cost is 10 + 30 + 50 + 50 = 140.
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">twoCitySchedCost</span>(<span class="identifier">self</span>, <span class="identifier">costs</span>: <span class="identifier">List</span>[<span class="identifier">List</span>[<span class="identifier">int</span>]]) -> <span class="identifier">int</span>:
+                        <span class="identifier">total_cost</span> = <span class="number">0</span>
+                        <span class="identifier">costs</span>.<span class="identifier">sort</span>(<span class="keyword">key</span>=<span class="keyword">lambda</span> <span class="identifier">x</span>: <span class="identifier">x</span>[<span class="number">0</span>] - <span class="identifier">x</span>[<span class="number">1</span>])
+                        
+                        <span class="identifier">n</span> = <span class="identifier">len</span>(<span class="identifier">costs</span>) // <span class="number">2</span> 
+                        
+                        <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="number">0</span>, <span class="identifier">n</span>):
+                            <span class="identifier">total_cost</span> += <span class="identifier">costs</span>[<span class="identifier">i</span>][<span class="number">0</span>]
+                            
+                        <span class="keyword">for</span> <span class="identifier">i</span> <span class="keyword">in</span> <span class="identifier">range</span>(<span class="identifier">n</span>, <span class="number">2</span> * <span class="identifier">n</span>):
+                            <span class="identifier">total_cost</span> += <span class="identifier">costs</span>[<span class="identifier">i</span>][<span class="number">1</span>]
+                            
+                        <span class="keyword">return</span> <span class="identifier">total_cost</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>
