@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRUQueue - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>MRUQueue</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>Design a queue-like data structure that moves the most recently used element to the end of the queue.</p>
+        <p>Implement the MRUQueue class:</p>
+        <ul>
+            <li><code>MRUQueue(int n)</code> constructs the MRUQueue with n elements: [1,2,3,...,n].</li>
+            <li><code>int fetch(int k)</code> moves the kth element (1-indexed) to the end of the queue and returns it.</li>
+        </ul>
+    </div>
+    <div class="section">
+        <h2>Examples</h2>
+        <pre class="python">
+            <code>
+                # Example usage:
+                obj = MRUQueue(8)
+                print(obj.fetch(3))  # returns 3
+                print(obj.fetch(5))  # returns 6
+                print(obj.fetch(2))  # returns 2
+                print(obj.fetch(8))  # returns 2
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">MRUQueue</span>:
+
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">n</span>: <span class="keyword">int</span>):
+                        <span class="identifier">self</span>.<span class="identifier">queue</span> = <span class="identifier">list</span>(<span class="identifier">range</span>(<span class="literal">1</span>, <span class="identifier">n</span> + <span class="literal">1</span>))
+
+                    <span class="keyword">def</span> <span class="identifier">fetch</span>(<span class="identifier">self</span>, <span class="identifier">k</span>: <span class="keyword">int</span>) -> <span class="keyword">int</span>:
+                        <span class="identifier">value</span> = <span class="identifier">self</span>.<span class="identifier">queue</span>[<span class="identifier">k</span>-<span class="literal">1</span>]
+                        <span class="identifier">self</span>.<span class="identifier">queue</span>.<span class="identifier">append</span>(<span class="identifier">self</span>.<span class="identifier">queue</span>.<span class="identifier">pop</span>(<span class="identifier">k</span>-<span class="literal">1</span>))
+                        <span class="keyword">return</span> <span class="identifier">value</span>
+                
+                <span class="comment"># Your MRUQueue object will be instantiated and called as such:</span>
+                <span class="comment"># obj = MRUQueue(n)</span>
+                <span class="comment"># param_1 = obj.fetch(k)</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>

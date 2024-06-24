@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Order Traversal - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Vertical Order Traversal</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).</p>
+        <p>If two nodes are in the same row and column, the order should be from left to right.</p>
+    </div>
+    <div class="section">
+        <h2>Examples</h2>
+        <pre class="python">
+            <code>
+                # Example usage:
+                root = TreeNode(3)
+                root.left = TreeNode(9)
+                root.right = TreeNode(20)
+                root.right.left = TreeNode(15)
+                root.right.right = TreeNode(7)
+                
+                solution = Solution()
+                print(solution.verticalOrder(root))
+                # Output: [[9], [3, 15], [20], [7]]
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">from</span> <span class="identifier">collections</span> <span class="keyword">import</span> <span class="identifier">deque, defaultdict</span>
+                
+                <span class="comment"># Definition for a binary tree node.</span>
+                <span class="keyword">class</span> <span class="identifier">TreeNode</span>:
+                    <span class="keyword">def</span> <span class="identifier">__init__</span>(<span class="identifier">self</span>, <span class="identifier">val</span>=<span class="literal">0</span>, <span class="identifier">left</span>=<span class="keyword">None</span>, <span class="identifier">right</span>=<span class="keyword">None</span>):
+                        <span class="identifier">self</span>.<span class="identifier">val</span> = <span class="identifier">val</span>
+                        <span class="identifier">self</span>.<span class="identifier">left</span> = <span class="identifier">left</span>
+                        <span class="identifier">self</span>.<span class="identifier">right</span> = <span class="identifier">right</span>
+                
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">verticalOrder</span>(<span class="identifier">self</span>, <span class="identifier">root</span>: <span class="identifier">Optional</span>[<span class="identifier">TreeNode</span>]) -> <span class="identifier">List</span>[<span class="identifier">List</span>[<span class="identifier">int</span>]]:
+                        <span class="keyword">if</span> <span class="keyword">not</span> <span class="identifier">root</span>:
+                            <span class="keyword">return</span> <span class="identifier">[]</span>
+                        
+                        <span class="identifier">col_table</span> = <span class="identifier">defaultdict</span>(<span class="identifier">list</span>)
+                        <span class="identifier">queue</span> = <span class="identifier">deque</span>([(<span class="identifier">root</span>, <span class="literal">0</span>)])
+                        
+                        <span class="keyword">while</span> <span class="identifier">queue</span>:
+                            <span class="identifier">node</span>, <span class="identifier">column</span> = <span class="identifier">queue</span>.<span class="identifier">popleft</span>()
+                            
+                            <span class="keyword">if</span> <span class="identifier">node</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                                <span class="identifier">col_table</span>[<span class="identifier">column</span>].<span class="identifier">append</span>(<span class="identifier">node</span>.<span class="identifier">val</span>)
+                                <span class="identifier">queue</span>.<span class="identifier">append</span>([(<span class="identifier">node</span>.<span class="identifier">left</span>, <span class="identifier">column</span>-<span class="literal">1</span>)])
+                                <span class="identifier">queue</span>.<span class="identifier">append</span>([(<span class="identifier">node</span>.<span class="identifier">right</span>, <span class="identifier">column</span>+<span class="literal">1</span>)])
+                                
+                        <span class="keyword">return</span> [<span class="identifier">col_table</span>[<span class="identifier">x</span>] <span class="keyword">for</span> <span class="identifier">x</span> <span class="keyword">in</span> <span class="identifier">sorted</span>(<span class="identifier">col_table</span>.<span class="identifier">keys</span>())]
+            </code>
+        </pre>
+    </div>
+</body>
+</html>
