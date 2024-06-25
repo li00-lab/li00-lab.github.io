@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Time to Buy and Sell Stock - LeetCode Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Add syntax highlighting styles */
+        .python {
+            color: #333;
+        }
+        .python .keyword {
+            color: #008000;
+        }
+        .python .string {
+            color: #ba2121;
+        }
+        .python .identifier {
+            color: #0000ff;
+        }
+        .python .literal {
+            color: #ba2121;
+        }
+        .python .comment {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link">
+        <a href="../index.html">&larr; Back to All Problems</a>
+    </div>
+    <h1>Best Time to Buy and Sell Stock</h1>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <p>You are given an array prices where prices[i] is the price of a given stock on the ith day.</p>
+        <p>You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.</p>
+        <p>Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.</p>
+    </div>
+    <div class="section">
+        <h2>Examples</h2>
+        <pre class="python">
+            <code>
+                # Example 1:
+                # Input: prices = [7,1,5,3,6,4]
+                # Output: 5
+                # Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+                # Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+                
+                # Example 2:
+                # Input: prices = [7,6,4,3,1]
+                # Output: 0
+                # Explanation: In this case, no transactions are done and the max profit = 0.
+            </code>
+        </pre>
+    </div>
+    <div class="section">
+        <h2>Solution</h2>
+        <pre class="python">
+            <code>
+                <span class="keyword">class</span> <span class="identifier">Solution</span>:
+                    <span class="keyword">def</span> <span class="identifier">maxProfit</span>(<span class="identifier">self</span>, <span class="identifier">prices</span>: <span class="identifier">List</span>[<span class="identifier">int</span>]) -> <span class="identifier">int</span>:
+                        <span class="identifier">min_price</span> = <span class="identifier">float</span>(<span class="string">'inf'</span>)
+                        <span class="identifier">profit</span> = <span class="literal">0</span>
+                        
+                        <span class="keyword">for</span> <span class="identifier">price</span> <span class="keyword">in</span> <span class="identifier">prices</span>:
+                            <span class="keyword">if</span> <span class="identifier">price</span> <span class="keyword"><</span> <span class="identifier">min_price</span>:
+                                <span class="identifier">min_price</span> = <span class="identifier">price</span>
+                            
+                            <span class="identifier">current_price</span> = <span class="identifier">price</span> - <span class="identifier">min_price</span>
+                            <span class="keyword">if</span> <span class="identifier">current_price</span> <span class="keyword">></span> <span class="identifier">profit</span>:
+                                <span class="identifier">profit</span> = <span class="identifier">current_price</span>
+                                
+                        <span class="keyword">return</span> <span class="identifier">profit</span>
+            </code>
+        </pre>
+    </div>
+</body>
+</html>
